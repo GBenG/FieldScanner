@@ -19,8 +19,8 @@ int Z_shift = 85;
 int X_pos = 0;
 int Y_pos = 0;
 int Z_pos = 0;
-Boolean X_sw = false;
-Boolean Y_sw = false;
+Boolean X_revers = false;
+Boolean Y_revers = false;
 
 
 Boolean scan = false;
@@ -76,7 +76,7 @@ void draw()
   model_view();
 //--------------------------------------------------------
   if( scan == true ){
-    
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
     //Move
     serial_left.wait_responde = true;
     serial_left.writeln("G1 X"+(X_shift+X_pos*2)+" Y"+(Y_shift+Y_pos*2)+" Z"+(Z_shift+Z_pos*2)+"F1500\n");
@@ -85,7 +85,7 @@ void draw()
       delay(1);
     }
     println("latch C off");
-    
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    
     //Scan
     serial_rght.wait_responde = true;
     int[] numbers = {0xE0,0xE0,0x01,0x76};
@@ -94,7 +94,7 @@ void draw()
     while( serial_rght.wait_responde == true ){
       delay(1);
       if( k_send_try++ > 100 ){
-        println("K Restore[!]");
+        println(minute()+":"+second()+" K Restore[!]");
         serial_rght.writearr(numbers, 4);
         k_send_try = 0;
         delay(1);
@@ -102,23 +102,53 @@ void draw()
     }
     k_send_try = 0;
     println("latch K off");
-    
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
     //Store
     appendTextToFile(outFilename, X_pos+"\u0009"+Y_pos+"\u0009"+Z_pos+"\u0009"+data[X_pos][Y_pos][Z_pos]);
-
-    X_pos ++;
-    if( X_pos >= cols ){
-      X_pos = 0;
-      Y_pos ++;
-      if( Y_pos >= rows ){
-        Y_pos = 0;
-        Z_pos ++;
-        if( Y_pos >= layers ){
-          scan = false;
-          timeshtamp_end();
+    //println(X_pos+"\u0009"+Y_pos+"\u0009"+Z_pos+"\u0009");
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+    //X
+    if( X_revers == false ){
+      X_pos ++;
+      if( X_pos == cols-1 ){
+        if( Y_revers == false ){
+          Y_pos ++;
+        }else{
+          Y_pos --;
         }
+        X_revers = true;
+      }
+    }else{
+      X_pos --;
+      if( X_pos == 0 ){
+        if( Y_revers == false ){
+          Y_pos ++;
+        }else{
+          Y_pos --;
+        }
+        X_revers = false;
       }
     }
+    
+    //Y
+    if( Y_revers == false ){
+      if( Y_pos >= rows-1 ){
+        Z_pos ++;
+        Y_revers = true;
+      }
+    }else{
+      if( Y_pos == 0 ){
+        Z_pos ++;
+        Y_revers = false;
+      }
+    }
+    
+    //Z
+    if( Z_pos >= layers ){
+      scan = false;
+      timeshtamp_end();
+    }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    
   }
 }
 
@@ -141,7 +171,7 @@ void keyPressed() {
     Y_pos = 0;
     Z_pos = 0;
     timeshtamp_start();
-    //model_init();
+    model_init();
   }
   if( key == '1' ){
     if( detail_level > 2 ){
