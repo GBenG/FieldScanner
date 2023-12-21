@@ -7,14 +7,21 @@ import     processing.serial.*;
 Serial_port serial_left = new Serial_port();
 Serial_port serial_rght = new Serial_port();
 
-//Scan area
-int cols = 100/2;   //50
-int rows = 70/2;   //35
-int layers = 30/2; //15
+//Scan area [Bare KPP]
+//int cols = 100/2;   //50
+//int rows = 70/2;   //35
+//int layers = 30/2; //15
+//int X_shift = -30;
+//int Y_shift = -80;
+//int Z_shift = 85;
 
-int X_shift = -30;
+//Scan area [KPO]
+int cols = 70/2;    //X
+int rows = 140/2;   //Y
+int layers = 30/2;  //Z
+int X_shift = -35;
 int Y_shift = -80;
-int Z_shift = 85;
+int Z_shift = 90;
 
 int X_pos = 0;
 int Y_pos = 0;
@@ -164,6 +171,9 @@ void keyPressed() {
   }
   if( key == 's' ){
     serial_left.writeln("G1 X"+X_shift+" Y"+Y_shift+" Z"+Z_shift+"F3000\r\n");
+  }
+  if( key == 't' ){
+    serial_left.writeln("G1 X"+X_shift+" Y"+Y_shift+" Z"+(Z_shift+100)+"F3000\r\n");
   }
   if( key == 'y' ){
     scan = true;

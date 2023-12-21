@@ -3,7 +3,7 @@ int[][][] data;  // 3D array to store values
 float side = 30;  // Size of each cube
 float angleX = 1.4000003;
 float angleY = 4.3213367E-7;
-float zoom = 0.9000001;
+float zoom = 0.5;
 
 int detail_level = 2;
 int sphere_size  = 6;
@@ -76,15 +76,16 @@ void model_view() {
           noFill();  // Make cube invisible if value is 0
         }
         
-        if((i==0)&&(j==0)&&(k==0)){
-          fill(0);
-        }
-        if((i==cols-1)&&(j==0)&&(k==0)){
-          fill(255,0,0);
-        }
-         if((i==cols-1)&&(j==rows-1)&&(k==0)){
-          fill(0,255,0);
-        }
+        //Coordinates
+        //if((i==0)&&(j==0)&&(k==0)){
+        //  fill(0);
+        //}
+        //if((i==cols-1)&&(j==0)&&(k==0)){
+        //  fill(255,0,0);
+        //}
+        // if((i==cols-1)&&(j==rows-1)&&(k==0)){
+        //  fill(0,255,0);
+        //}
 
         noStroke();  // Remove strokes
 
