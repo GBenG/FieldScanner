@@ -35,6 +35,8 @@ Boolean wait = false;
 
 int k_send_try = 0;
 
+ProgressBar progressBar;
+
 
 //----------------------------------------------------------------------------------------------------------------------
 void setup() 
@@ -68,6 +70,9 @@ void setup()
   } catch (Exception e) {
     println("Error loading file: " + e.getMessage());
   }
+  
+  //Progress bar
+  progressBar = new ProgressBar(0, 0, width, 10, color(bgcolor), color(txcolor));
 }
 
 
@@ -79,6 +84,12 @@ void draw()
   control_watermark();
   control_group("LEFT", 0, height);
   control_group("RIGHT", width-170, height);
+  progressBar.display();
+  
+  // Calculate percentage of completion
+  float percentage = ((Z_pos * cols * rows + Y_pos * cols + X_pos) / (float)(cols * rows * layers)) * 100;
+  progressBar.setProgress(percentage);
+  
 //--------------------------------------------------------  
   model_view();
 //--------------------------------------------------------
