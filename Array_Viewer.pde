@@ -5,11 +5,12 @@ float angleX = 1.4000003;
 float angleY = 4.3213367E-7;
 float zoom = 0.5;
 
-int detail_level = 2;
-int sphere_size  = 6;
+int detail_level = 5;
+int sphere_size  = 20;
 Boolean render_uid = true;
 Boolean slice_x = false;
 Boolean slice_y = false;
+Boolean slice_z = false;
 
 void model_init() {
   
@@ -57,6 +58,9 @@ void model_view() {
           continue;
         }
         if( slice_y == true && j > rows/2 ){
+          continue;
+        }
+        if( slice_z == true && k > 2 ){
           continue;
         }
 

@@ -15,13 +15,21 @@ Serial_port serial_rght = new Serial_port();
 //int Y_shift = -80;
 //int Z_shift = 85;
 
-//Scan area [KPO]
+//Scan area [KPO] TAG
+//int cols = 70/2;    //X
+//int rows = 140/2;   //Y
+//int layers = 30/2;  //Z
+//int X_shift = -35;
+//int Y_shift = -80;
+//int Z_shift = 90;
+
+//Scan area [KPO] CARD
 int cols = 70/2;    //X
-int rows = 140/2;   //Y
+int rows = 150/2;   //Y
 int layers = 30/2;  //Z
 int X_shift = -35;
-int Y_shift = -80;
-int Z_shift = 90;
+int Y_shift = -90;
+int Z_shift = 85;
 
 int X_pos = 0;
 int Y_pos = 0;
@@ -72,7 +80,7 @@ void setup()
   }
   
   //Progress bar
-  progressBar = new ProgressBar(0, 0, width, 10, color(bgcolor), color(txcolor));
+  progressBar = new ProgressBar(this, 0, 0, width, 10, color(bgcolor), color(txcolor), true);
 }
 
 
@@ -234,6 +242,16 @@ void keyPressed() {
     }else{
       slice_y = true;
     }
+  }
+  if( key == '9' ){
+    if( slice_z == true ){
+      slice_z = false;
+    }else{
+      slice_z = true;
+    }
+  }
+  if( key == 'a' ){
+    serial_left.writeln("G1 X"+(X_shift+cols*2)+" Y"+(Y_shift+rows*2)+" Z"+Z_shift+"F3000\r\n");
   }
   if( key == 'd' ){
     println("angleX:"+angleX+" angleY:"+angleY+" zoom:"+zoom);
